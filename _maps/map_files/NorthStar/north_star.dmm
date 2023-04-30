@@ -33589,6 +33589,8 @@
 /area/station/engineering/atmos)
 "jak" = (
 /obj/effect/turf_decal/tile/red/half,
+/obj/item/paper/fluff/genpop_instructions,
+/obj/structure/table,
 /turf/open/floor/iron/dark/side,
 /area/station/security/brig)
 "jas" = (
@@ -91038,12 +91040,6 @@
 /obj/structure/closet{
 	name = "Robe Closet"
 	},
-/obj/item/clothing/suit/chaplainsuit/whiterobe,
-/obj/item/clothing/suit/chaplainsuit/whiterobe,
-/obj/item/clothing/suit/chaplainsuit/whiterobe,
-/obj/item/clothing/suit/chaplainsuit/whiterobe,
-/obj/item/clothing/suit/chaplainsuit/whiterobe,
-/obj/item/clothing/suit/chaplainsuit/whiterobe,
 /turf/open/floor/iron,
 /area/station/service/chapel)
 "ylg" = (
