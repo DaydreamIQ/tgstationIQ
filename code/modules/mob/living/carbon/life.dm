@@ -27,11 +27,9 @@
 	if(stat == DEAD)
 		stop_sound_channel(CHANNEL_HEARTBEAT)
 	else
-
 		if(getStaminaLoss() > 0 && stam_regen_start_time <= world.time)
 			adjustStaminaLoss(-INFINITY)
-
-	handle_bodyparts(seconds_per_tick, times_fired)
+		handle_bodyparts(seconds_per_tick, times_fired)
 
 	if(. && mind) //. == not dead
 		for(var/key in mind.addiction_points)
@@ -689,7 +687,7 @@
 		var/datum/reagent/bits = bile
 		if(istype(bits, /datum/reagent/consumable))
 			var/datum/reagent/consumable/goodbit = bile
-			fullness += goodbit.get_nutriment_factor() * goodbit.volume / goodbit.metabolization_rate
+			fullness += goodbit.get_nutriment_factor(src) * goodbit.volume / goodbit.metabolization_rate
 			continue
 		fullness += 0.6 * bits.volume / bits.metabolization_rate //not food takes up space
 
@@ -711,7 +709,7 @@
 ///Check to see if we have the liver, if not automatically gives you last-stage effects of lacking a liver.
 
 /mob/living/carbon/proc/handle_liver(seconds_per_tick, times_fired)
-	if(!dna)
+	if(isnull(has_dna()))
 		return
 
 	var/obj/item/organ/internal/liver/liver = get_organ_slot(ORGAN_SLOT_LIVER)
@@ -769,12 +767,19 @@
  */
 /mob/living/carbon/proc/undergoing_cardiac_arrest()
 	var/obj/item/organ/internal/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
-	if(istype(heart) && heart.beating)
+	if(istype(heart) && heart.is_beating())
 		return FALSE
 	else if(!needs_heart())
 		return FALSE
 	return TRUE
 
+/**
+ * Causes the mob to either start or stop having a heart attack.
+ *
+ * status - Pass TRUE to start a heart attack, or FALSE to stop one.
+ *
+ * Returns TRUE if heart status was changed (heart attack -> no heart attack, or visa versa)
+ */
 /mob/living/carbon/proc/set_heartattack(status)
 	if(!can_heartattack())
 		return FALSE
@@ -783,5 +788,7 @@
 	if(!istype(heart))
 		return FALSE
 
-	heart.beating = !status
-	return TRUE
+	if(status)
+		return heart.Stop()
+
+	return heart.Restart()
